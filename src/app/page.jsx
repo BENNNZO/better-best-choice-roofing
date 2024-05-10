@@ -6,8 +6,10 @@ import { useEffect } from "react"
 export default function Home() {
     useEffect(() => {
         const map = tt.map({
-            key: process.env.TOMTOM_KEY,
-            container: 'map'
+            key: process.env.NEXT_PUBLIC_TT_SK,
+            container: 'map',
+            center: [-81.97483750375089, 33.468953974764304],
+            zoom: 8
         });
 
         setTimeout(() => {
@@ -25,7 +27,7 @@ export default function Home() {
 
             // SHOW COORDS ON CLICK
             map.on('click', function (event) {
-                var lngLat = new tt.LngLat(roundLatLng(event.lngLat.lng), roundLatLng(event.lngLat.lat));
+                var lngLat = new tt.LngLat(event.lngLat.lng, event.lngLat.lat);
 
                 new tt.Popup({ className: 'tt-popup' })
                     .setLngLat(lngLat)
@@ -130,7 +132,7 @@ export default function Home() {
     }, [])
 
     return (
-        <main className="bg-zinc-900 p-2 h-screen flex flex-row gap-2">
+        <main className="bg-zinc-900 p-2 h-screen flex flex-row gap-2 w-96 aspect-video">
             {/* <iframe src="https://example.com" className="w-full rounded-lg">
                 <p>Your browser does not support iframes.</p>
             </iframe>
