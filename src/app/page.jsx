@@ -7,7 +7,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 // import Ping from '/ping.mp3'
 
 export default function Home() {
-    const appRef = useRef()
+    // const appRef = useRef()
 
     const [test, setTest] = useState(false)
 
@@ -152,45 +152,47 @@ export default function Home() {
         // console.log(appRef)
     }, [])
 
-    function iframeLoad() {
-        console.log("loaded iframe")
+    // function iframeLoad() {
+    //     console.log("loaded iframe")
 
-        // let appEl = document.getElementById("iframe")
-        // let innerDoc = appEl.contentDocument || appEl.contentWindow.document
-        // console.log(innerDoc)
-    }
+    //     // let appEl = document.getElementById("iframe")
+    //     // let innerDoc = appEl.contentDocument || appEl.contentWindow.document
+    //     // console.log(innerDoc)
+    // }
 
     return (
         <main className="bg-zinc-900 p-2 h-screen flex flex-row gap-2">
-            <div className="w-full rounded-md bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold font-mono text-white">
+            <div className="w-full rounded-md bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold text-white">
                 {
                     test ? (
-                        <CountdownCircleTimer
-                            isPlaying
-                            key={test}
-                            duration={3}
-                            colors={['#34eb3d', '#F7B801', '#A30000', '#A30000']}
-                            colorsTime={[30, 20, 10, 0]}
-                            strokeWidth={16}
-                            trailColor="rgba(255, 255, 255, 0.2)"
-                            onComplete={() => {
-                                audio.play()
-                                setTest(false)
-                            }}
-                        >
-                            {({ remainingTime }) => remainingTime}
-                        </CountdownCircleTimer>
+                        <div className="pop-in font-mono">
+                            <CountdownCircleTimer
+                                isPlaying
+                                key={test}
+                                duration={30}
+                                colors={['#34eb3d', '#F7B801', '#A30000', '#A30000']}
+                                colorsTime={[30, 20, 10, 0]}
+                                strokeWidth={16}
+                                trailColor="rgba(255, 255, 255, 0.2)"
+                                onComplete={() => {
+                                    audio.play()
+                                    setTest(false)
+                                }}
+                            >
+                                {({ remainingTime }) => remainingTime}
+                            </CountdownCircleTimer>
+                        </div>
                     ) : (
-                        <button onClick={() => setTest(true)} className="bg-zinc-600 rounded-md px-4 py-2">
+                        <button onClick={() => setTest(true)} className="bg-zinc-600 rounded-md px-4 py-2 pop-in">
                             START TIMER
                         </button>
                     )
                 }
             </div>
-            <iframe src="https://example.com" className="w-full rounded-lg">
+            <iframe src="https://example.com" className="w-full rounded-md">
                 <p>Your browser does not support iframes.</p>
             </iframe>
-            {/* <iframe src="https://app.bestchoiceroofing.com" className="w-full rounded-lg" onLoad={() => iframeLoad()} id="iframe">
+            {/* <iframe src="https://app.bestchoiceroofing.com" className="w-full rounded-md" onLoad={() => iframeLoad()} id="iframe">
                 <p>Your browser does not support iframes.</p>
             </iframe> */}
             <div id="map" className="w-full rounded-md">
