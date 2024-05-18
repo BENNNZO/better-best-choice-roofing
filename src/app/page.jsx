@@ -1,9 +1,16 @@
 "use client"
 
 import tt from "@tomtom-international/web-sdk-maps";
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+
+import Ping from 'ping.mp3'
 
 export default function Home() {
+    const appRef = useRef()
+
+    const [test, setTest] = useState(false)
+
     const [geoPoints, setGeoPoints] = useState([
         // low density
         [-82.01853054100553, 33.48448547456728],
@@ -33,6 +40,25 @@ export default function Home() {
         [-0.13389631465156526, 51.510387047712356],
         [-0.11281231063600217, 51.51807866942707]
     ])
+    const [toggleHeatmap, setToggleHeatmap] = useState(true)
+    const [mapObject, setMapObject] = useState(null)
+
+    const audio = new Audio(Ping)
+
+    function setHeatmapData(pointsArray, map) {
+        map.getSource('heatmap-data').setData({
+            type: 'FeatureCollection',
+            features: pointsArray.map(function (point) {
+                return {
+                    geometry: {
+                        type: 'Point',
+                        coordinates: point
+                    },
+                    properties: {}
+                }
+            })
+        })
+    }
 
     useEffect(() => {
         const map = tt.map({
@@ -50,37 +76,21 @@ export default function Home() {
             trackUserLocation: true
         }))
 
-        // SHOW COORDS ON SCREEN CLICK
+        // ADD HEATMAP POINT ON CLICK
         map.on('click', function (event) {
             setGeoPoints(e => {
                 let updatedArray = [...e, [event.lngLat.lng, event.lngLat.lat]]
 
-                map.getSource('heatmap-data').setData({
-                    type: 'FeatureCollection',
-                    features: updatedArray.map(function (point) {
-                        return {
-                            geometry: {
-                                type: 'Point',
-                                coordinates: point
-                            },
-                            properties: {}
-                        }
-                    })
-                })
+                setHeatmapData(updatedArray, map)
 
                 return updatedArray
             })
-            
-            // let lngLat = new tt.LngLat(event.lngLat.lng, event.lngLat.lat);
-            // 
-            // new tt.Popup({ className: 'tt-popup' })
-            //     .setLngLat(lngLat)
-            //     .setHTML(lngLat.toString())
-            //     .addTo(map);
         })
 
         // HEATMAP LAYER
         map.on('load', function () {
+            setMapObject(map)
+
             map.addSource('heatmap-data', {
                 'type': 'geojson',
                 'data': {
@@ -138,22 +148,65 @@ export default function Home() {
                 }
             })
         })
+
+        // console.log(appRef)
     }, [])
+
+    function iframeLoad() {
+        console.log("loaded iframe")
+
+        // let appEl = document.getElementById("iframe")
+        // let innerDoc = appEl.contentDocument || appEl.contentWindow.document
+        // console.log(innerDoc)
+    }
 
     return (
         <main className="bg-zinc-900 p-2 h-screen flex flex-row gap-2">
-            {/* <iframe src="https://example.com" className="w-full rounded-lg">
+            <div className="w-full rounded-md bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold font-mono text-white">
+                {
+                    test ? (
+                        <CountdownCircleTimer
+                            isPlaying
+                            key={test}
+                            duration={30}
+                            colors={['#34eb3d', '#F7B801', '#A30000', '#A30000']}
+                            colorsTime={[30, 20, 10, 0]}
+                            strokeWidth={16}
+                            trailColor="rgba(255, 255, 255, 0.2)"
+                            onComplete={() => {
+                                audio.play()
+                                setTest(false)
+                            }}
+                        >
+                            {({ remainingTime }) => remainingTime}
+                        </CountdownCircleTimer>
+                    ) : (
+                        <button onClick={() => setTest(true)} className="bg-zinc-600 rounded-md px-4 py-2">
+                            START TIMER
+                        </button>
+                    )
+                }
+            </div>
+            <iframe src="https://example.com" className="w-full rounded-lg">
                 <p>Your browser does not support iframes.</p>
             </iframe>
-            <iframe src="https://example.com" className="w-full rounded-lg">
+            {/* <iframe src="https://app.bestchoiceroofing.com" className="w-full rounded-lg" onLoad={() => iframeLoad()} id="iframe">
                 <p>Your browser does not support iframes.</p>
             </iframe> */}
             <div id="map" className="w-full rounded-md">
+                <button
+                    className="bg-red-400 font-bold absolute z-50 top-2 left-2 px-4 py-2 rounded-md shadow-md"
+                    onClick={e => {
+                        e.preventDefault()
 
+                        setToggleHeatmap(e => {
+                            setHeatmapData(!e ? geoPoints : [], mapObject)
+                            return !e
+                        })
+                    }}>
+                    TOGGLE
+                </button>
             </div>
-            {/* <p className="w-1/2 font-mono text-white">
-                {JSON.stringify(geoPoints, null, 4)}
-            </p> */}
         </main>
     );
 }

@@ -12,7 +12,9 @@
     "@tomtom-international/web-sdk-maps": "^6.25.0",
     "next": "14.2.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-countdown-circle-timer": "^3.2.1",
+    "react-dom": "^18",
+    "react-timer-hook": "^3.0.7"
   },
   "devDependencies": {
     "eslint": "^8",
