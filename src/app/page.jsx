@@ -152,17 +152,17 @@ export default function Home() {
         // console.log(appRef)
     }, [])
 
-    // function iframeLoad() {
-    //     console.log("loaded iframe")
+    function iframeLoad() {
+        console.log("loaded iframe")
 
-    //     // let appEl = document.getElementById("iframe")
-    //     // let innerDoc = appEl.contentDocument || appEl.contentWindow.document
-    //     // console.log(innerDoc)
-    // }
+        // let appEl = document.getElementById("iframe")
+        // let innerDoc = appEl.contentDocument || appEl.contentWindow.document
+        // console.log(innerDoc)
+    }
 
     return (
-        <main className="bg-zinc-900 p-2 h-screen flex flex-row gap-2">
-            <div className="w-full rounded-md bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold text-white">
+        <main className="bg-zinc-900 p-2 h-screen gap-4 px-2 overflow-x-scroll w-screen flex-none flex flex-row flex-nowrap snap-x snap-mandatory">
+            <div className="w-full h-full rounded-b-[45px] rounded-t-xl bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold text-white flex-none snap-center">
                 {
                     test ? (
                         <div className="pop-in font-mono">
@@ -189,13 +189,13 @@ export default function Home() {
                     )
                 }
             </div>
-            <iframe src="https://example.com" className="w-full rounded-md">
-                <p>Your browser does not support iframes.</p>
-            </iframe>
-            {/* <iframe src="https://app.bestchoiceroofing.com" className="w-full rounded-md" onLoad={() => iframeLoad()} id="iframe">
+            {/* <iframe src="https://example.com" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none">
                 <p>Your browser does not support iframes.</p>
             </iframe> */}
-            <div id="map" className="w-full rounded-md">
+            <iframe src="https://app.bestchoiceroofing.com" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none" onLoad={() => iframeLoad()} id="iframe">
+                <p>Your browser does not support iframes.</p>
+            </iframe>
+            <div id="map" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none">
                 <button
                     className="bg-red-400 font-bold absolute z-50 top-2 left-2 px-4 py-2 rounded-md shadow-md"
                     onClick={e => {
