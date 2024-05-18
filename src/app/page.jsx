@@ -4,8 +4,6 @@ import tt from "@tomtom-international/web-sdk-maps";
 import { useEffect, useState, useRef } from "react"
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
-// import Ping from '/ping.mp3'
-
 export default function Home() {
     // const appRef = useRef()
 
@@ -42,6 +40,7 @@ export default function Home() {
     ])
     const [toggleHeatmap, setToggleHeatmap] = useState(true)
     const [mapObject, setMapObject] = useState(null)
+    const [mapHamburger, setMapHamburger] = useState(false)
 
     const audio = new Audio('/ping.mp3')
 
@@ -161,8 +160,34 @@ export default function Home() {
     }
 
     return (
-        <main className="bg-zinc-900 p-2 h-screen gap-4 px-2 overflow-x-scroll w-screen flex-none flex flex-row flex-nowrap snap-x snap-mandatory">
-            <div className="w-full h-full rounded-b-[45px] rounded-t-xl bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold text-white flex-none snap-center">
+        <main className="bg-zinc-900 p-2 h-screen gap-4 px-2 overflow-x-scroll w-screen flex-none flex flex-row flex-nowrap snap-x snap-mandatory scroll-smooth">
+            <div className="w-full h-full flex flex-col gap-2 rounded-b-[45px] rounded-t-xl overflow-hidden snap-center flex-none">
+                <div id="map" className="w-full h-full rounded-md">
+                    {/* <button
+                        className="bg-red-400 font-bold absolute z-50 top-2 left-2 px-4 py-2 rounded-md shadow-md"
+                        onClick={e => {
+                            e.preventDefault()
+
+                            setToggleHeatmap(e => {
+                                setHeatmapData(!e ? geoPoints : [], mapObject)
+                                return !e
+                            })
+                        }}>
+                        TOGGLE
+                    </button> */}
+                    <div className="bg-zinc-200 shadow-md w-12 h-12 absolute top-2 left-2 rounded-md z-50" onClick={() => setMapHamburger(e => !e)}>
+                        <div className={`w-6 h-0.5 rounded-full bg-zinc-800 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 duration-100 ${mapHamburger ? "top-1/2 rotate-45" : "top-[calc(50%-0.5rem)] rotate-0"}`}></div>
+                        <div className={`w-6 h-0.5 rounded-full bg-zinc-800 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 duration-100 ${mapHamburger ? "opacity-0 top-[calc(50%-0rem)]" : "top-[calc(50%-0rem)]"}`}></div>
+                        <div className={`w-6 h-0.5 rounded-full bg-zinc-800 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 duration-100 ${mapHamburger ? "top-1/2 -rotate-45" : "top-[calc(50%+0.5rem)] rotate-0"}`}></div>
+                    </div>
+                </div>
+                <button className="h-24 w-full rounded-md relative overflow-hidden">
+                    <a href="#app" className="w-full h-full bg-zinc-800 grid place-items-center">
+                        <img src="/arrow.svg" alt="go back to BCR app" className="h-12 invert opacity-50 rotate-180" /> 
+                    </a>
+                </button>
+            </div>
+            <div id="timer" className="w-full h-full rounded-b-[45px] rounded-t-xl bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold text-white flex-none snap-center">
                 {
                     test ? (
                         <div className="pop-in font-mono">
@@ -192,23 +217,9 @@ export default function Home() {
             {/* <iframe src="https://example.com" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none">
                 <p>Your browser does not support iframes.</p>
             </iframe> */}
-            <iframe src="https://app.bestchoiceroofing.com" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none" onLoad={() => iframeLoad()} id="iframe">
+            <iframe src="https://app.bestchoiceroofing.com" allow="*" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none" onLoad={() => iframeLoad()} id="app">
                 <p>Your browser does not support iframes.</p>
             </iframe>
-            <div id="map" className="w-full h-full rounded-b-[45px] rounded-t-xl snap-center flex-none">
-                <button
-                    className="bg-red-400 font-bold absolute z-50 top-2 left-2 px-4 py-2 rounded-md shadow-md"
-                    onClick={e => {
-                        e.preventDefault()
-
-                        setToggleHeatmap(e => {
-                            setHeatmapData(!e ? geoPoints : [], mapObject)
-                            return !e
-                        })
-                    }}>
-                    TOGGLE
-                </button>
-            </div>
         </main>
     );
 }

@@ -23,7 +23,7 @@ export const metadata = {
     manifest: "/manifest.json",
     appleWebApp: {
         capable: true,
-        statusBarStyle: "default",
+        statusBarStyle: "black-translucent",
         title: APP_DEFAULT_TITLE,
         // startUpImage: [],
     },
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
                 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
                 <meta name="apple-mobile-web-app-title" content="My App" />
             </head>
-            <body className={`${inter.className} overflow-hidden`}>
+            <body className={`${inter.className} overflow-hidden bg-zinc-900`}>
                 {children}
             </body>
         </html>
