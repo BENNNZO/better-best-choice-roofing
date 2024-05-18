@@ -4,7 +4,7 @@ import tt from "@tomtom-international/web-sdk-maps";
 import { useEffect, useState, useRef } from "react"
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
-import Ping from 'ping.mp3'
+// import Ping from '/ping.mp3'
 
 export default function Home() {
     const appRef = useRef()
@@ -43,7 +43,7 @@ export default function Home() {
     const [toggleHeatmap, setToggleHeatmap] = useState(true)
     const [mapObject, setMapObject] = useState(null)
 
-    const audio = new Audio(Ping)
+    const audio = new Audio('/ping.mp3')
 
     function setHeatmapData(pointsArray, map) {
         map.getSource('heatmap-data').setData({
@@ -168,7 +168,7 @@ export default function Home() {
                         <CountdownCircleTimer
                             isPlaying
                             key={test}
-                            duration={30}
+                            duration={3}
                             colors={['#34eb3d', '#F7B801', '#A30000', '#A30000']}
                             colorsTime={[30, 20, 10, 0]}
                             strokeWidth={16}
