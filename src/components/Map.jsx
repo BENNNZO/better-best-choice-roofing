@@ -59,7 +59,8 @@ export default function Map() {
                 key: process.env.NEXT_PUBLIC_TT_SK,
                 container: 'map',
                 center: [-81.97483750375089, 33.468953974764304],
-                zoom: 10
+                zoom: 10,
+                style: "/map_style.json"
             })
 
             // GOTO LOCATION ON MAP BUTTON
