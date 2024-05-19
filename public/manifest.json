@@ -1,6 +1,6 @@
 {
-    "name": "My awesome PWA app",
-    "short_name": "PWA App",
+    "name": "Better Best Choice Roofing",
+    "short_name": "BBCR",
     "icons": [
         {
             "src": "/icons/android-chrome-192x192.png",
@@ -21,7 +21,7 @@
     ],
     "theme_color": "#09090b",
     "background_color": "#09090b",
-    "start_url": "/",
+    "start_url": "/#app",
     "display": "standalone",
     "orientation": "portrait"
 }
