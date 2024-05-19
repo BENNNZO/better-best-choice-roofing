@@ -1,12 +1,15 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 
 export default function Timer() {
     const [running, setRunning] = useState(false)
+    const [pingSFX, setPingSFX] = useState(null)
     
-    const audio = new Audio('/ping.mp3')
+    useEffect(() => {
+        setPingSFX(new Audio('/ping.mp3'))
+    }, [])
 
     return (
         <section id="timer" className="w-full h-full rounded-b-[45px] rounded-t-xl bg-zinc-800 drop-shadow-md grid place-items-center text-3xl font-bold text-white flex-none snap-center">
