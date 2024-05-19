@@ -1,7 +1,6 @@
-'use client'
+"use client"
 
 import { useState, useEffect } from "react"
-import tt from "@tomtom-international/web-sdk-maps";
 
 export default function Map() {
     const [toggleHeatmap, setToggleHeatmap] = useState(true)
@@ -53,93 +52,99 @@ export default function Map() {
     }
 
     useEffect(() => {
-        const map = tt.map({
-            key: process.env.NEXT_PUBLIC_TT_SK,
-            container: 'map',
-            center: [-81.97483750375089, 33.468953974764304],
-            zoom: 8
-        })
+        async function initMap() {
+            const tt = await import('@tomtom-international/web-sdk-maps')
 
-        // GOTO LOCATION ON MAP BUTTON
-        map.addControl(new tt.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }))
-
-        // ADD HEATMAP POINT ON CLICK
-        map.on('click', function (event) {
-            setGeoPoints(e => {
-                let updatedArray = [...e, [event.lngLat.lng, event.lngLat.lat]]
-
-                setHeatmapData(updatedArray, map)
-
-                return updatedArray
-            })
-        })
-
-        // HEATMAP LAYER
-        map.on('load', function () {
-            setMapObject(map)
-
-            map.addSource('heatmap-data', {
-                'type': 'geojson',
-                'data': {
-                    type: 'FeatureCollection',
-                    features: geoPoints.map(function (point) {
-                        return {
-                            geometry: {
-                                type: 'Point',
-                                coordinates: point
-                            },
-                            properties: {}
-                        }
-                    })
-                }
+            const map = tt.map({
+                key: process.env.NEXT_PUBLIC_TT_SK,
+                container: 'map',
+                center: [-81.97483750375089, 33.468953974764304],
+                zoom: 10
             })
 
-            map.addLayer({
-                'id': 'heatmap',
-                'type': 'heatmap',
-                'source': 'heatmap-data',
-                'paint': {
-                    // Increase the heatmap weight of each point
-                    'heatmap-weight': 0.6,
-                    // Increase the heatmap color weight weight by zoom level
-                    // heatmap-intensity is a multiplier on top of heatmap-weight
-                    'heatmap-intensity': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        0, 1,
-                        9, 3
-                    ],
-                    // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-                    // Begin color ramp at 0-stop with a 0-transparancy color
-                    // to create a blur-like effect.
-                    'heatmap-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['heatmap-density'],
-                        0, 'rgba(49, 150, 251, 0)',
-                        0.2, 'rgb(49, 150, 251)',
-                        0.4, 'rgb(127, 234, 20)',
-                        0.6, 'rgb(251, 251, 49)',
-                        0.8, 'rgb(251, 150, 49)',
-                        1, 'rgb(251, 49, 49)'
-                    ],
-                    // Adjust the heatmap radius by zoom level
-                    'heatmap-radius': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        0, 2,
-                        4, 20 // at zoom level 9 the radius will be 20px
-                    ]
-                }
+            // GOTO LOCATION ON MAP BUTTON
+            map.addControl(new tt.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }))
+    
+            // ADD HEATMAP POINT ON CLICK
+            map.on('click', function (event) {
+                setGeoPoints(e => {
+                    let updatedArray = [...e, [event.lngLat.lng, event.lngLat.lat]]
+    
+                    setHeatmapData(updatedArray, map)
+    
+                    return updatedArray
+                })
             })
-        })
+    
+            // HEATMAP LAYER
+            map.on('load', function () {
+                setMapObject(map)
+    
+                map.addSource('heatmap-data', {
+                    'type': 'geojson',
+                    'data': {
+                        type: 'FeatureCollection',
+                        features: geoPoints.map(function (point) {
+                            return {
+                                geometry: {
+                                    type: 'Point',
+                                    coordinates: point
+                                },
+                                properties: {}
+                            }
+                        })
+                    }
+                })
+    
+                map.addLayer({
+                    'id': 'heatmap',
+                    'type': 'heatmap',
+                    'source': 'heatmap-data',
+                    'paint': {
+                        // Increase the heatmap weight of each point
+                        'heatmap-weight': 0.6,
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        'heatmap-intensity': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0, 1,
+                            9, 3
+                        ],
+                        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+                        // Begin color ramp at 0-stop with a 0-transparancy color
+                        // to create a blur-like effect.
+                        'heatmap-color': [
+                            'interpolate',
+                            ['linear'],
+                            ['heatmap-density'],
+                            0, 'rgba(49, 150, 251, 0)',
+                            0.2, 'rgb(49, 150, 251)',
+                            0.4, 'rgb(127, 234, 20)',
+                            0.6, 'rgb(251, 251, 49)',
+                            0.8, 'rgb(251, 150, 49)',
+                            1, 'rgb(251, 49, 49)'
+                        ],
+                        // Adjust the heatmap radius by zoom level
+                        'heatmap-radius': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            0, 2,
+                            4, 20 // at zoom level 9 the radius will be 20px
+                        ]
+                    }
+                })
+            })
+        }
+        // had to use this work around for client side imports cause it kept throwing a self is undefined error when building.
+        initMap()
     }, [])
 
     return (

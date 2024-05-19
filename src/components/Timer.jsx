@@ -25,7 +25,7 @@ export default function Timer() {
                             strokeWidth={16}
                             trailColor="rgba(255, 255, 255, 0.2)"
                             onComplete={() => {
-                                audio.play()
+                                pingSFX.play()
                                 setRunning(false)
                             }}
                         >

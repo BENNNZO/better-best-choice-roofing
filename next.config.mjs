@@ -11,7 +11,7 @@ const withPWA = withPWAInit({
 });
 
 export default withPWA({
-  eslint: {
-    ignoreDuringBuilds: true,
-  }
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // }
 });
